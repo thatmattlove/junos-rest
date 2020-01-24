@@ -1,11 +1,13 @@
 # JunOS REST
 
-**Note: This is very much a work in progress.**
+**WORK IN PROGRESS**
 
-I'm deploying a bunch of Juniper routers and refuse to artisanally hand-craft either the initial configs or the operational changes of my big ass routing policy.
+JunOS REST is a library/CLI/API for interacting with Juniper JunOS devices without having to deal with the headache of XML.
+
+The ultimate goal is to be able to take CLI output from `show configuration | display json`, load it into this library, and have that configuration magically appear on your Juniper device.
 
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
-[![SCC Line Count](https://sloc.xyz/github/checktheroads/hyperglass/?category=code)](https://github.com/boyter/scc/)
+[![SCC Line Count](https://sloc.xyz/github/checktheroads/junos-rest/?category=code)](https://github.com/boyter/scc/)
 
 ## Installation
 
@@ -99,6 +101,16 @@ results = await set_config(
 )
 print(results)
 # {"status": "success", "data": None}
+```
+
+#### asyncio
+
+You might notice the `await` syntax above. If you're not familiar, [have a read](https://docs.python.org/3/library/asyncio.html). I do not intend to make a synchronous API available for this library. If you need to run junos-rest synchronously, try this:
+
+```python
+import asyncio
+
+results = asyncio.run(set_config(...))
 ```
 
 # License
