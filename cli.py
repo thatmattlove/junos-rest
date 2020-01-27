@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import asyncio
+import random
 
 import click
 import stackprinter
@@ -11,6 +12,8 @@ from pygments import highlight
 from pygments.formatters import Terminal256Formatter
 from pygments.lexers.data import JsonLexer
 from pygments.styles.monokai import MonokaiStyle
+from rapidtables import FORMAT_GENERATOR
+from rapidtables import format_table
 
 stackprinter.set_excepthook(style="darkbg2")
 asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
@@ -51,16 +54,18 @@ class _Emoji:
 WS = _Char(" ")
 NL = _Char("\n")
 CL = _Char(":")
+DASH = _Char("-")
 E = _Emoji()
 
 # Click Style Helpers
 SUCCESS = {"fg": "green", "bold": True}
 ERROR = {"fg": "red", "bold": True}
-LABEL = {"fg": "white"}
+LABEL = {"fg": "white", "bold": True}
 INFO = {"fg": "blue", "bold": True}
 STATUS = {"fg": "black"}
 VALUE = {"fg": "magenta", "bold": True}
 CMD_HELP = {"fg": "white"}
+TITLE = {"fg": "white", "bold": True, "underline": True}
 
 
 def async_command(func):
@@ -90,6 +95,26 @@ def highlighted_json(raw):
     return highlight(raw_json, JsonLexer(), Terminal256Formatter(style=MonokaiStyle))
 
 
+def random_colors(rows):
+    """From tuple of commands, generate random but unique colors."""
+    colors = ["blue", "green", "red", "yellow", "magenta", "cyan", "white"]
+    rows_list = list(rows)
+
+    num_colors = len(colors)
+    num_rows = len(rows_list)
+
+    if num_rows >= num_colors:
+        colors += colors
+
+    unique_colors = random.sample(colors, num_rows)
+    colored_rows = []
+
+    for i, row in enumerate(rows_list):
+        colored_rows.append(click.style(row, fg=unique_colors[i]))
+
+    return colored_rows
+
+
 @click.group()
 def cli():
     pass
@@ -110,6 +135,29 @@ async def send_config(device, config):
     results = await set_config(device=device, config=loaded_config)
 
     click.echo(NL[1] + E.CHECK + NL[2] + highlighted_json(results))
+
+
+@cli.command("list", help="List configured devices")
+def list_devices():
+    from junos_rest.config import params
+
+    devices = [d.dict(exclude={"password"}) for d in params.devices]
+    try:
+        header, rows = format_table(devices, fmt=FORMAT_GENERATOR, separator=WS[4])
+
+        click.echo(
+            click.style("Configured Devices", **TITLE)
+            + NL[2]
+            + click.style(header, **LABEL)
+            + NL[1]
+            + click.style(DASH[len(header)], **CMD_HELP)
+        )
+        for row in random_colors(rows):
+            click.echo(row)
+        click.echo(NL[0])
+
+    except Exception as e:
+        raise ClickException(str(e))
 
 
 if __name__ == "__main__":
