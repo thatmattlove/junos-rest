@@ -1,4 +1,5 @@
 # Project
+.DS_Store
 config.yaml
 
 # Byte-compiled / optimized / DLL files

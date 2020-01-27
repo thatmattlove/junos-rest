@@ -614,6 +614,22 @@ version = "5.3"
 
 [[package]]
 category = "dev"
+description = "Quick-and-dirty debugging output for tired programmers"
+name = "q"
+optional = false
+python-versions = "*"
+version = "2.6"
+
+[[package]]
+category = "main"
+description = "Format/create and print tables from lists of dicts"
+name = "rapidtables"
+optional = false
+python-versions = "*"
+version = "0.1.11"
+
+[[package]]
+category = "dev"
 description = "Alternative regular expression module, to replace re."
 name = "regex"
 optional = false
@@ -782,7 +798,7 @@ more-itertools = "*"
 docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 
 [metadata]
-content-hash = "bbd32a92f8e192991eb85dc30b81756f950d43eee3f93f80e86dd93f9aacc859"
+content-hash = "af9affc8c312412febc41405937277107bbea32c7c4199e1d3e4382ed4d4425e"
 python-versions = "^3.6"
 
 [metadata.files]
@@ -1034,6 +1050,13 @@ pyyaml = [
     {file = "PyYAML-5.3-cp38-cp38-win32.whl", hash = "sha256:70024e02197337533eef7b85b068212420f950319cc8c580261963aefc75f811"},
     {file = "PyYAML-5.3-cp38-cp38-win_amd64.whl", hash = "sha256:cb1f2f5e426dc9f07a7681419fe39cee823bb74f723f36f70399123f439e9b20"},
     {file = "PyYAML-5.3.tar.gz", hash = "sha256:e9f45bd5b92c7974e59bcd2dcc8631a6b6cc380a904725fce7bc08872e691615"},
+]
+q = [
+    {file = "q-2.6-py2.py3-none-any.whl", hash = "sha256:8687008a5b50ddc1c114392a37591cb4fbe082dcc8b02bdc6692689c69d08314"},
+    {file = "q-2.6.tar.gz", hash = "sha256:de0fcf5a439754975dd8022c3bf26374b882d0fe4265aab8813f4e87e057eed5"},
+]
+rapidtables = [
+    {file = "rapidtables-0.1.11.tar.gz", hash = "sha256:4acc7fd3817a8c358a6d0295bfce84e2386357a0fd61a80bb773226f53fff7cc"},
 ]
 regex = [
     {file = "regex-2020.1.8-cp27-cp27m-win32.whl", hash = "sha256:4e8f02d3d72ca94efc8396f8036c0d3bcc812aefc28ec70f35bb888c74a25161"},
