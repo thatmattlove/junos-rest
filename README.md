@@ -30,7 +30,14 @@ poetry install --no-dev
 
 ## Configuration
 
-The configuration is held in a YAML file located at `junos-rest/junos_rest/config.yaml`. Its model is strictly validated as:
+The configuration is  held in a YAML file located at any of the following locations:
+
+- `$HOME/junos_rest.yaml`
+- `/etc/junos_rest/junos_rest.yaml`
+- `junos-rest/junos_rest.yaml`
+- `junos-rest/junos_rest/junos_rest.yaml`
+
+From the top down, the first config file found will be used and no other locations will be checked. The configuration model is strictly validated as:
 
 ```yaml
 devices:
@@ -59,6 +66,7 @@ Options:
 
 Commands:
   configure  Send a new config
+  list       List configured devices
 
 $ ./cli.py configure --help
 Usage: cli.py configure [OPTIONS]

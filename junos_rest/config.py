@@ -11,10 +11,10 @@ from junos_rest.models.config import Config
 
 WORKING_DIR = Path(__file__).parent
 POTENTIAL_CONFIG_LOCATIONS = [
-    Path(__file__).parent.parent,
     Path.home(),
-    Path(__file__).parent,
     Path("/etc/junos-rest/"),
+    Path(__file__).parent.parent,
+    Path(__file__).parent,
 ]
 
 _matched_config_file = None
