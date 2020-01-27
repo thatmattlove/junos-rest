@@ -34,14 +34,3 @@ with _matched_config_file.open("r") as raw:
     unvalidated_config = yaml.safe_load(raw.read())
 
 params = Config(**unvalidated_config)
-
-# CONFIG_FILE = WORKING_DIR / "config.yaml"
-
-# if not CONFIG_FILE.exists():
-#    CONFIG_FILE = WORKING_DIR / "config.yml"
-
-# if CONFIG_FILE.exists():
-#     with CONFIG_FILE.open("r") as raw:
-#         unvalidated_config = yaml.safe_load(raw.read())
-# else:
-#     raise Exception("No config file found.")
