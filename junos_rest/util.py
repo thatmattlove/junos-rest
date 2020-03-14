@@ -1,11 +1,13 @@
 """Utility functions."""
 
+# Standard Library Imports
+import sys
+
 # Third Party Imports
 import ujson
 
 # Project Imports
 from junos_rest.config import params
-from junos_rest.constants import CONFIG_JSON
 from junos_rest.exceptions import JunosRestError
 from junos_rest.log import log
 
@@ -72,5 +74,9 @@ async def build_config(config):
     else:
         parsed.update(config)
 
-    log.debug("Pending Config:\n{c}", c=highlight(data=parsed))
+    pending = parsed
+    if sys.stdout.isatty():
+        pending = highlight(data=parsed)
+
+    log.debug("Pending Config:\n{c}", c=pending)
     return parsed
