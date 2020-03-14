@@ -74,9 +74,5 @@ async def build_config(config):
     else:
         parsed.update(config)
 
-    pending = parsed
-    if sys.stdout.isatty():
-        pending = highlight(data=parsed)
-
-    log.debug("Pending Config:\n{c}", c=pending)
+    log.debug("Pending Config:\n{c}", c=parsed)
     return parsed
