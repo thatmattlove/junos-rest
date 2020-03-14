@@ -27,7 +27,7 @@ async def set_config(device, config):
     if "@" in current_config["configuration"]:
         current_config["configuration"].pop("@")
 
-    json_config = json.dumps(config_data, escape_forward_slashes=False)
+    json_config = json.dumps(config_data)
 
     result = await session.post(data=CONFIG_JSON.format(config=json_config).strip())
     return result
