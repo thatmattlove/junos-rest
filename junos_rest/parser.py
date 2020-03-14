@@ -111,7 +111,7 @@ async def parse_results(response):
         and "commit-results" not in result
         and "load-configuration-results" in result
     ):
-        load_success = result["load-configuration-status"].get("load-success", 1)
+        load_success = result["load-configuration-results"].get("load-success", 1)
         if load_success is None:
             output = {"status": "success", "data": None}
         elif load_success == 1:
