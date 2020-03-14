@@ -106,15 +106,23 @@ async def parse_results(response):
                 "detail": [],
             }
 
-    elif status == 200 and "commit-results" not in result:
-        output = {"status": "success", "data": str(result)}
+    elif (
+        status == 200
+        and "commit-results" not in result
+        and "load-configuration-results" in result
+    ):
+        load_success = result["load-configuration-status"].get("load-success", 1)
+        if load_success is None:
+            output = {"status": "success", "data": None}
+        elif load_success == 1:
+            output = {"status": "error", "message": response.text.strip()}
     elif (
         status == 200
         and result["commit-results"]["routing-engine"].get("commit-success") is None
     ):
         output = {"status": "success", "data": None}
 
-    elif status and not response.text:
+    elif status in range(200, 300) and not response.text:
         output = {"status": "success", "data": None}
 
     elif status in range(400, 600):
