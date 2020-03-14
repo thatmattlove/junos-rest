@@ -106,6 +106,8 @@ async def parse_results(response):
                 "detail": [],
             }
 
+    elif status == 200 and "commit-results" not in result:
+        output = {"status": "success", "data": str(result)}
     elif (
         status == 200
         and result["commit-results"]["routing-engine"].get("commit-success") is None
