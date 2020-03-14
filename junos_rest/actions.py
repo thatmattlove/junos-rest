@@ -1,7 +1,7 @@
 """Supported Interactions with JunOS Devices."""
 
-# Third Party Imports
-import ujson
+# Standard Library Imports
+import json
 
 # Project Imports
 from junos_rest.connection import Connection
@@ -27,7 +27,7 @@ async def set_config(device, config):
     if "@" in current_config["configuration"]:
         current_config["configuration"].pop("@")
 
-    json_config = ujson.dumps(config_data, escape_forward_slashes=False)
+    json_config = json.dumps(config_data, escape_forward_slashes=False)
 
     result = await session.post(data=CONFIG_JSON.format(config=json_config).strip())
     return result
