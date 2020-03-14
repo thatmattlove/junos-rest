@@ -1,6 +1,7 @@
 """HTTP Connection Handler."""
 # Standard Library Imports
 import asyncio
+from json import JSONDecodeError
 
 # Third Party Imports
 import httpx
@@ -64,7 +65,10 @@ class Connection:
             "base_url": endpoint,
             "verify": False,
             "auth": (device.username, device.password.get_secret_value()),
-            "headers": {"Content-Type": "application/xml"},
+            "headers": {
+                "Content-Type": "application/xml",
+                "Accept": "application/json",
+            },
         }
 
         instance.device = device
@@ -89,7 +93,7 @@ class Connection:
 
         log.debug(f"Closed session with {self.device.host}")
 
-    async def get(self, endpoint="/rpc", params=None):
+    async def get(self, item="", endpoint="/rpc", params=None):
         """Perform HTTP GET.
 
         Keyword Arguments:
@@ -107,6 +111,8 @@ class Connection:
 
         if params is not None:
             request_config.update({"params": params})
+        if item:
+            endpoint = f"{endpoint}/{item}"
         try:
             response = await self.session.get(endpoint, **request_config)
 
@@ -122,8 +128,10 @@ class Connection:
         except httpx.HTTPError as http_err:
             raise JunosRestError(str(http_err))
 
-        parsed = await parse_results(response)
-        return parsed
+        try:
+            return response.json()
+        except JSONDecodeError as je:
+            raise JunosRestError(str(je))
 
     async def post(self, endpoint="/rpc/", params=None, data=""):
         """Perform HTTP POST.
@@ -132,7 +140,7 @@ class Connection:
             endpoint {str} -- HTTP URI (default: {"/rpc/"})
             params {dict} -- URL Parameters (default: {None})
             data {str} -- XML Content (default: {""})
-        
+
         Raises:
             JunosRestError: Raised if status code is not 200
             JunosRestError: Raised on other HTTP/library errors

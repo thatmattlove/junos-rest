@@ -72,7 +72,5 @@ async def build_config(config):
     else:
         parsed.update(config)
 
-    json_config = ujson.dumps(parsed, escape_forward_slashes=False)
-
     log.debug("Pending Config:\n{c}", c=highlight(data=parsed))
-    return CONFIG_JSON.format(config=json_config).strip()
+    return parsed

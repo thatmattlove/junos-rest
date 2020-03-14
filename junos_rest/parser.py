@@ -94,7 +94,7 @@ async def parse_results(response):
     result = parsed.get("results")
 
     if "error" in result or "error" in result.get("commit-results", {}):
-        error = result["error"] or result["commit-results"]["error"]
+        error = result.get("error") or result["commit-results"].get("error")
 
         if error is not None:
             details, messages = error
